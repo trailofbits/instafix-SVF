@@ -15,6 +15,8 @@
 #ifndef BREAKCONSTANTGEPS_H
 #define BREAKCONSTANTGEPS_H
 
+#include "SVFIR/SVFValue.h"
+#include "llvm/IR/PassManager.h"
 
 namespace SVF
 {
@@ -71,20 +73,16 @@ public:
     }
     inline void UnifyFunctionExit(Module& module)
     {
+        std::unique_ptr<UnifyFunctionExitNodes> unify_pass = std::make_unique<UnifyFunctionExitNodes>();
+        std::unique_ptr<llvm::FunctionAnalysisManager> FAM = std::make_unique<llvm::FunctionAnalysisManager>();
         for (Module::const_iterator iter = module.begin(), eiter = module.end();
                 iter != eiter; ++iter)
         {
             const Function& fun = *iter;
             if(fun.isDeclaration())
                 continue;
-            getUnifyExit(fun)->runOnFunction(const_cast<Function&>(fun));
+            unify_pass->run(const_cast<Function&>(fun), *FAM);
         }
-    }
-    /// Get Unified Exit basic block node
-    inline UnifyFunctionExitNodes* getUnifyExit(const Function& fn)
-    {
-        assert(!fn.isDeclaration() && "external function does not have DF");
-        return &getAnalysis<UnifyFunctionExitNodes>(const_cast<Function&>(fn));
     }
 };
 
