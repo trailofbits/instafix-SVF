@@ -43,6 +43,7 @@
 #include "SVF-LLVM/ICFGBuilder.h"
 #include "Graphs/CallGraph.h"
 #include "Util/CallGraphBuilder.h"
+#include "llvm/IR/PassManager.h"
 
 using namespace std;
 using namespace SVF;
@@ -495,6 +496,7 @@ void LLVMModuleSet::prePassSchedule()
     /// MergeFunctionRets Pass
     std::unique_ptr<UnifyFunctionExitNodes> p2 =
         std::make_unique<UnifyFunctionExitNodes>();
+    std::unique_ptr<llvm::FunctionAnalysisManager> FAM = std::make_unique<llvm::FunctionAnalysisManager>();
     for (Module &M : getLLVMModules())
     {
         for (auto F = M.begin(), E = M.end(); F != E; ++F)
@@ -502,7 +504,7 @@ void LLVMModuleSet::prePassSchedule()
             Function &fun = *F;
             if (fun.isDeclaration())
                 continue;
-            p2->runOnFunction(fun);
+            p2->run(fun, *FAM);
         }
     }
 }

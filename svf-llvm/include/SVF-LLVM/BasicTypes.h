@@ -72,7 +72,11 @@ typedef llvm::GlobalObject GlobalObject;
 typedef llvm::Use Use;
 typedef llvm::ModulePass ModulePass;
 typedef llvm::IRBuilder<> IRBuilder;
-#if LLVM_VERSION_MAJOR >= 12
+
+// Note: Not tested on LLVM 18
+#if LLVM_VERSION_MAJOR >= 19
+typedef llvm::UnifyFunctionExitNodesPass UnifyFunctionExitNodes;
+#elif LLVM_VERSION_MAJOR >= 12
 typedef llvm::UnifyFunctionExitNodesLegacyPass UnifyFunctionExitNodes;
 #else
 typedef llvm::UnifyFunctionExitNodes UnifyFunctionExitNodes;
