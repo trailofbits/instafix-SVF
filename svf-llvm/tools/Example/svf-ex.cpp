@@ -33,6 +33,7 @@
 #include "Util/CommandLine.h"
 #include "Util/Options.h"
 #include "WPA/Andersen.h"
+#include <llvm/Support/ManagedStatic.h>
 
 using namespace llvm;
 using namespace std;
@@ -219,4 +220,3 @@ int main(int argc, char ** argv)
     llvm::llvm_shutdown();
     return 0;
 }
-
