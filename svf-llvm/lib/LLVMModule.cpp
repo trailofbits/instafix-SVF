@@ -44,6 +44,7 @@
 #include "Graphs/CallGraph.h"
 #include "Util/CallGraphBuilder.h"
 #include "llvm/IR/PassManager.h"
+#include <llvm/ADT/SetVector.h>
 
 using namespace std;
 using namespace SVF;
@@ -428,7 +429,7 @@ void LLVMModuleSet::initDomTree(SVFFunction* svffun, const Function* fun)
     for (DominanceFrontierBase::const_iterator dfIter = df.begin(), eDfIter = df.end(); dfIter != eDfIter; dfIter++)
     {
         const BasicBlock* keyBB = dfIter->first;
-        const std::set<BasicBlock* >& domSet = dfIter->second;
+        const llvm::SetVector<BasicBlock *>& domSet = dfIter->second;
         Set<const SVFBasicBlock*>& valueBasicBlocks = dfBBsMap[getSVFBasicBlock(keyBB)];
         for (const BasicBlock* bbValue:domSet)
         {
