@@ -314,7 +314,7 @@ inline static DataLayout* getDataLayout(Module* mod)
 {
     static DataLayout *dl = nullptr;
     if (dl == nullptr)
-        dl = new DataLayout(mod);
+        dl = new DataLayout(mod->getDataLayout());
     return dl;
 }
 
