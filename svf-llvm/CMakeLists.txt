@@ -12,6 +12,8 @@ message(STATUS "LLVM STATUS:
   Dynamic lib   ${LLVM_LINK_LLVM_DYLIB}"
 )
 
+option(SHARED_LLVM_OBJECTS "Build with LLVM shared objects" OFF)
+
 # Though not necessary, check if SVF is being built in debug mode & if that matches LLVM
 if(CMAKE_BUILD_TYPE STREQUAL "Debug" AND NOT ${LLVM_BUILD_TYPE} STREQUAL "Debug")
   message(NOTICE  "Building SVF in debug-mode but LLVM was not built in debug-mode; "
@@ -57,6 +59,10 @@ else()
     target
     transformutils
   )
+
+  if (SHARED_LLVM_OBJECTS)
+    set(llvm_libs ${llvm_libs} LLVMOption LLVMDemangle)
+  endif()
 endif()
 
 # Make the "add_llvm_library()" command available and configure LLVM/CMake
