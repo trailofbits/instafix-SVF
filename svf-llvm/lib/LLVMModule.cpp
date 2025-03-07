@@ -792,7 +792,7 @@ void LLVMModuleSet::buildFunToFunMap()
 
             // Clone function body with updated valueMap
             llvm::SmallVector<ReturnInst*, 8> ignoredReturns;
-            CloneFunctionInto(clonedFunction, extFunToClone, valueMap, llvm::CloneFunctionChangeType::LocalChangesOnly, ignoredReturns, "", nullptr);
+            CloneFunctionInto(clonedFunction, extFunToClone, valueMap, llvm::CloneFunctionChangeType::DifferentModule, ignoredReturns, "", nullptr);
         }
         if (appFunToReplace)
         {
