@@ -39,6 +39,7 @@
 #include "Graphs/CallGraph.h"
 #include "Util/Options.h"
 #include "Util/SVFUtil.h"
+#include "llvm/ADT/SetVector.h"
 
 using namespace std;
 using namespace SVF;
@@ -274,7 +275,7 @@ void SVFIRBuilder::initDomTree(FunObjVar* svffun, const Function* fun)
     for (DominanceFrontierBase::const_iterator dfIter = df.begin(), eDfIter = df.end(); dfIter != eDfIter; dfIter++)
     {
         const BasicBlock* keyBB = dfIter->first;
-        const std::set<BasicBlock* >& domSet = dfIter->second;
+        const llvm::SetVector<BasicBlock *>& domSet = dfIter->second;
         Set<const SVFBasicBlock*>& valueBasicBlocks = dfBBsMap[llvmModuleSet()->getSVFBasicBlock(keyBB)];
         for (const BasicBlock* bbValue:domSet)
         {
