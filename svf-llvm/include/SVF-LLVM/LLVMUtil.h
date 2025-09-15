@@ -59,11 +59,18 @@ inline double getDoubleValue(const ConstantFP* fpValue)
         const llvm::fltSemantics& semantics = fpValue->getValueAPF().getSemantics();
         if (&semantics == &llvm::APFloat::IEEEhalf() ||
                 &semantics == &llvm::APFloat::IEEEsingle() ||
-                &semantics == &llvm::APFloat::IEEEdouble() ||
-                &semantics == &llvm::APFloat::IEEEquad() ||
-                &semantics == &llvm::APFloat::x87DoubleExtended())
+                &semantics == &llvm::APFloat::IEEEdouble())
         {
             dval = fpValue->getValueAPF().convertToDouble();
+        }
+        else if (&semantics == &llvm::APFloat::IEEEquad() ||
+                 &semantics == &llvm::APFloat::x87DoubleExtended())
+        {
+            // Handle formats that cannot be represented in double precision
+            llvm::APFloat temp = fpValue->getValueAPF();
+            bool losesInfo;
+            temp.convert(llvm::APFloat::IEEEdouble(), llvm::APFloat::rmNearestTiesToEven, &losesInfo);
+            dval = temp.convertToDouble();
         }
         else
         {
