@@ -331,7 +331,7 @@ protected:
         }
         else
         {
-            SVFUtil::wrnMsg("not support indirect call to add AddrStmt.\n");
+            SVFUtil::writeWrnMsg("not support indirect call to add AddrStmt.\n");
         }
         if (functionName == "malloc")
         {
